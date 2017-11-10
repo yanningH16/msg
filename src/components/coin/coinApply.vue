@@ -81,7 +81,7 @@
     <div class="delite">
       <div class="header">
       <span>短信类型</span>
-      <el-select v-model="value" placeholder="请选择">
+      <el-select v-model="value" placeholder="请选择" >
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -90,27 +90,27 @@
     </el-option>
   </el-select>
       <div class="block">
-    <span class="demonstration">活动时间</span>
+    <span class="demonstration">发送时间</span>
     <el-date-picker
       v-model="value8"
       type="date"
-      placeholder="选择日期"
-      default-value="2010-10-01">
+      value-format="yyyyMMdd"
+      placeholder="选择日期">
+    </el-date-picker>
+    <el-date-picker
+      v-model="value9"
+      type="date"
+      value-format="yyyyMMdd"
+      placeholder="选择日期">
     </el-date-picker>
   </div>
-   <el-button type="primary" style="margin-left:48px">查询</el-button>
+   <el-button type="primary" style="margin-left:48px" @click="look">查询</el-button>
     <el-button style="margin-left:30">下载失败日志</el-button>
 </div>
-    <!-- 图表部分 -->
-     <!-- <div id="app">
-        <schart :canvasId="canvasId"
-            :type="type"
-            :width="width"
-            :height="height"
-            :data="data"
-            :options="options"
-        ></schart>
-    </div> -->
+    <!-- 折线图部分 -->
+    <div class="charts" :style="{width:'1000px',height:'500px'}" ref="charts">
+       <div id="myChart" ref="myChart"></div>
+    </div>
     </div>
     <!-- 第三部分 月账单 -->
     <div class="bills">
@@ -195,6 +195,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+let echarts = require('echarts')
 export default {
   name: 'coinApply',
   data () {
@@ -231,29 +232,70 @@ export default {
       templateCount: '',
       alarmValue: '',
       value8: '',
+      value9: '',
       value4: '',
       options: [{
-        value: '选项1',
-        label: '黄金糕'
+        value: '1',
+        label: '通知'
       }, {
-        value: '选项2',
-        label: '双皮奶'
+        value: '2',
+        label: '验证码'
       }, {
-        value: '选项3',
-        label: '蚵仔煎'
+        value: '3',
+        label: '推广'
       }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
+        value: '4',
+        label: '全部'
       }],
       value: '',
       tableData: [],
       dialogTableVisible: false,
       dialogTable: false,
       gridData: [],
-      grid: []
+      grid: [],
+      option: {
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['发送总数', '成功数量']
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataZoom: {
+              yAxisIndex: 'none'
+            },
+            dataView: { readOnly: false },
+            magicType: { type: ['line', 'bar'] },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['0', '9-8', '9-9', '9-10', '9-11', '9-12', '9-13']
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            formatter: '{value}'
+          }
+        },
+        series: [
+          {
+            name: '发送总数',
+            type: 'line',
+            data: [11, 11, 15, 13, 12, 13, 10]
+          },
+          {
+            name: '成功数量',
+            type: 'line',
+            data: [1, 4, 2, 5, 3, 2, 9]
+          }
+        ]
+      }
     }
   },
   created () {
@@ -283,6 +325,18 @@ export default {
     this.listNum()
   },
   methods: {
+    // 折线图部分
+    resizeCharts () {
+      this.$refs.myChart.style.height = this.$refs.charts.style.height
+      this.$refs.myChart.style.width = this.$refs.charts.style.width
+    },
+    timeFilter (time) {
+      time = time.toString()
+      let month = time.substr(4, 2)
+      let day = time.substr(6, 2)
+      return month + '-' + day
+    },
+    // 折线图部分
     demo (pageNo, pageSize) {
       this.dialogTableVisible = true
       this.$ajax.post('/api/homepage/getTemplateList', {
@@ -465,7 +519,72 @@ export default {
       }).catch(() => {
         this.$message.error('服务器错误！')
       })
+    },
+    look () {
+      if (this.value8 === '' || this.value9 === '' || this.value === '') {
+        this.$message({
+          message: '筛选信息不能为空',
+          type: 'warning'
+        })
+      } else {
+        this.$ajax.post('/api/homepage/getByTypeTime', {
+          userId: JSON.parse(sessionStorage.getItem('user')).userId,
+          startDay: this.value8,
+          endDay: this.value9,
+          type: this.value,
+          pageNo: 1,
+          pageSize: 10
+        }).then((data) => {
+          if (data.data.code === '200') {
+            let timeArr = []
+            let sendAll = []
+            let sendSuccess = []
+            for (let i of data.data.data) {
+              timeArr.push(this.timeFilter(i.day))
+              sendAll.push(i.quireNum)
+              sendSuccess.push(i.successNum)
+            }
+            this.option.xAxis.data = timeArr
+            this.option.series[0].data = sendAll
+            this.option.series[1].data = sendSuccess
+            this.resizeCharts()
+            let myCharts = echarts.init(this.$refs.myChart)
+            myCharts.setOption(this.option)
+          }
+        }).catch((error) => {
+          console.log(error)
+        })
+      }
     }
+  },
+  mounted () {
+    this.$ajax.post('/api/homepage/getByTypeTime', {
+      userId: JSON.parse(sessionStorage.getItem('user')).userId,
+      startDay: '20170101',
+      endDay: '20171110',
+      type: 4,
+      pageNo: 1,
+      pageSize: 10
+    }).then((data) => {
+      if (data.data.code === '200') {
+        let timeArr = []
+        let sendAll = []
+        let sendSuccess = []
+        for (let i of data.data.data) {
+          timeArr.push(this.timeFilter(i.day))
+          sendAll.push(i.quireNum)
+          sendSuccess.push(i.successNum)
+        }
+        this.option.xAxis.data = timeArr
+        this.option.series[0].data = sendAll
+        this.option.series[1].data = sendSuccess
+        this.resizeCharts()
+        let myCharts = echarts.init(this.$refs.myChart)
+        myCharts.setOption(this.option)
+      }
+    }).catch((error) => {
+      console.log(error)
+    })
   }
 }
 </script>
