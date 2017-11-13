@@ -13,7 +13,7 @@
         <div class="inputCont">
           <div class="input">
             <span class="el-icon-edit"></span>
-            <input type="number" placeholder="输入手机号" v-model="username" >
+            <input type="number" placeholder="输入手机号" v-model="username">
           </div>
           <div class="input">
             <span class="el-icon-edit-outline"></span>
@@ -21,7 +21,9 @@
           </div>
           <button @click="LogoIn">登&nbsp;录</button>
           <h3>
-            <span><router-link :to="{ name: 'reg', params: { userId: 123 }}">忘记密码</router-link> </span>
+            <span>
+              <router-link :to="{ name: 'reg', params: { userId: 123 }}">忘记密码</router-link>
+            </span>
           </h3>
         </div>
       </div>
@@ -41,10 +43,16 @@ export default {
   methods: {
     LogoIn () {
       if (this.username === '' || this.password === '') {
-        alert('请输入正确用户名或密码！')
+        this.$message({
+          message: '请输入正确用户名或密码！',
+          type: 'warning'
+        })
         return false
       } else if (this.password.length < 6) {
-        alert('密码至少6位！')
+        this.$message({
+          message: '密码至少6位！',
+          type: 'warning'
+        })
         return false
       } else {
         this.$ajax.post('/api/user/login', {
@@ -81,7 +89,7 @@ export default {
   min-width 800px
   width 100%
   height 100%
-  background black
+  background url('../../assets/images/bg.png')
   .logo
     color #ffffff
     height 33px

@@ -140,7 +140,7 @@ export default {
   min-width 800px
   width 100%
   height 100%
-  background black
+  background url('../../assets/images/bg.png')
   .logo
     color #ffffff
     height 33px

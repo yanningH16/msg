@@ -4,7 +4,7 @@
     </div>
     <div class="info">
       <img :src="user.imgUrl" class="img">
-      <span class="text" >{{text}}</span>
+      <span class="text">{{text}}</span>
     </div>
     <div class="logout">
       <el-dropdown trigger="click" size="small" @command="logoStatus">
@@ -18,24 +18,24 @@
       </el-dropdown>
     </div>
     <div>
-    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" :modal-append-to-body=false>
-  <el-form :model="form">
-     <el-form-item label="" :label-width="formLabelWidth">
-     <el-input v-model="name" auto-complete="off" placeholder="请输入原密码" type='password'></el-input>
-    </el-form-item>
-    <el-form-item label="" :label-width="formLabelWidth">
-      <el-input v-model="newpass" auto-complete="off" placeholder="请输入新密码" type='password'></el-input>
-    </el-form-item>
-    <el-form-item label="" :label-width="formLabelWidth">
-     <el-input v-model="agpass" auto-complete="off" placeholder="请再次输入新密码" type='password'></el-input>
-    </el-form-item>
-  </el-form>
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">取 消</el-button>
-    <el-button type="primary" @click="sure">确 定</el-button>
-  </div>
-</el-dialog>
-</div>
+      <el-dialog title="修改密码" :visible.sync="dialogFormVisible" :modal-append-to-body=false>
+        <el-form :model="form">
+          <el-form-item label="" :label-width="formLabelWidth">
+            <el-input v-model="name" auto-complete="off" placeholder="请输入原密码" type='password'></el-input>
+          </el-form-item>
+          <el-form-item label="" :label-width="formLabelWidth">
+            <el-input v-model="newpass" auto-complete="off" placeholder="请输入新密码" type='password'></el-input>
+          </el-form-item>
+          <el-form-item label="" :label-width="formLabelWidth">
+            <el-input v-model="agpass" auto-complete="off" placeholder="请再次输入新密码" type='password'></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="sure">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -91,7 +91,7 @@ export default {
       }).then(() => {
         this.$router.push({ name: 'login' })
       }).catch(() => {
-        this.$message.error('服务器错误！')
+        // this.$message.error('服务器错误！')
       })
     },
     loginpass () {
@@ -101,6 +101,13 @@ export default {
       if (this.newpass !== this.agpass) {
         this.$message({
           message: '两次密码不一致,请重新输入',
+          type: 'warning'
+        })
+        return false
+      }
+      if (this.newpass === '' || this.agpass === '' || this.name === '') {
+        this.$message({
+          message: '密码不能为空',
           type: 'warning'
         })
         return false

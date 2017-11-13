@@ -2,195 +2,171 @@
   <div class="wrap">
     <div class="box">
       <div class="total">
-          <div class="header">
+        <div class="header">
           <img src="../../assets/images/fly.png" alt="">
           <span>本月已发短信数</span>
-          </div>
-          <p class="numbers"><span class="number">{{this.sendCount}}</span>条</p>
+        </div>
+        <p class="numbers">
+          <span class="number">{{this.sendCount}}</span>条</p>
       </div>
       <div class="sucess">
-          <div class="header" style="background:rgba(245,166,35,1)">
+        <div class="header" style="background:rgba(245,166,35,1)">
           <img src="../../assets/images/sucess.png" alt="">
           <span>本月已成功发送短信数</span>
-          </div>
-          <p class="numbers"><span class="number">{{this.successCount}}</span>条</p>
+        </div>
+        <p class="numbers">
+          <span class="number">{{this.successCount}}</span>条</p>
       </div>
       <div class="yue">
-          <div class="header" style="background:rgba(255,51,65,1)">
+        <div class="header" style="background:rgba(255,51,65,1)">
           <img src="../../assets/images/yue.png" alt="">
           <span>账户余额</span>
-          </div>
-          <p class="numbers"><span class="number">{{this.balance}}</span>元</p>
-           <p class="warning">余额预警:  ¥<span>{{this.alarmValue===this.alarmValue?this.alarmValue:'--'}}</span><em class="change" @click="warnin=true">修改</em></p>
+        </div>
+        <p class="numbers">
+          <span class="number">{{this.balance}}</span>元</p>
+        <p class="warning">余额预警: ¥
+          <span>{{this.alarmValue===this.alarmValue?this.alarmValue:'--'}}</span>
+          <em class="change" @click="warnin=true">修改</em>
+        </p>
       </div>
       <div class="right">
         <div class="right_top">
           <p>
-          短信模板: <span>{{this.templateCount}}</span><em>(可用)</em><i @click="demo(1,pageSize)">查看></i>
+            短信模板:
+            <span>{{this.templateCount}}</span>
+            <em>(可用)</em>
+            <i @click="demo(1,pageSize)">查看></i>
           </p>
-          </div>
+        </div>
         <div class="right_bottom" style="margin-top:20px">
           <p>
-          短信签名: <span>{{this.signCount}}</span><em>(可用)</em><i @click="qian(1,pageSize)">查看></i>
+            短信签名:
+            <span>{{this.signCount}}</span>
+            <em>(可用)</em>
+            <i @click="qian(1,pageSize)">查看></i>
           </p>
-          </div>
+        </div>
       </div>
     </div>
     <!-- 打开嵌套的表格 短信模板列表-->
     <div>
-    <el-dialog title="短信模板列表" :visible.sync="dialogTableVisible" :modal-append-to-body=false>
-  <el-table :data="gridData">
-    <el-table-column property="date" label="模板code" width="150"></el-table-column>
-    <el-table-column property="name" label="模板名称" width="200"></el-table-column>
-    <el-table-column property="address" label="模板类型"></el-table-column>
-  </el-table>
-  <div style="text-align:right;padding:20px">
- <el-pagination
-      @size-change="handleSizeChange_1"
-      @current-change="handleCurrentChange_1"
-      :current-page="currentPage4"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="totals">
-    </el-pagination>
+      <el-dialog title="短信模板列表" :visible.sync="dialogTableVisible" :modal-append-to-body="false">
+        <el-table :data="gridData">
+          <el-table-column property="date" label="模板code" width="250"></el-table-column>
+          <el-table-column property="name" label="模板名称" width="250">
+            <template slot-scope="scope">
+              <el-tooltip effect="dark" placement="top">
+                <div slot="content">{{ scope.row.content }}</div>
+                <p class="overHidden">{{ scope.row.name }}</p>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column property="address" label="模板类型"></el-table-column>
+        </el-table>
+        <div style="text-align:right;padding:20px">
+          <el-pagination @size-change="handleSizeChange_1" @current-change="handleCurrentChange_1" :current-page="currentPage4" :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totals">
+          </el-pagination>
+        </div>
+      </el-dialog>
     </div>
-</el-dialog>
-</div>
-<!--打开嵌套的表格 签名模板列表  -->
-<div>
-  <el-dialog title="签名列表" :visible.sync="dialogTable" :modal-append-to-body=false>
-  <el-table :data="grid">
-    <el-table-column property="dates" label="签名名称" width="150"></el-table-column>
-    <el-table-column property="names" label="签名类型" width="200"></el-table-column>
-  </el-table>
-  <div style="text-align:right;padding:20px">
- <el-pagination
-      @size-change="handleSizeChange_2"
-      @current-change="handleCurrentChange_2"
-      :current-page="currentPage4"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="totalss">
-    </el-pagination>
+    <!--打开嵌套的表格 签名模板列表  -->
+    <div>
+      <el-dialog title="签名列表" :visible.sync="dialogTable" :modal-append-to-body="false">
+        <el-table :data="grid">
+          <el-table-column property="dates" label="签名名称" width="500"></el-table-column>
+          <el-table-column property="names" label="签名类型" width="500"></el-table-column>
+        </el-table>
+        <div style="text-align:right;padding:20px">
+          <el-pagination @size-change="handleSizeChange_2" @current-change="handleCurrentChange_2" :current-page="currentPage4" :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalss">
+
+          </el-pagination>
+        </div>
+      </el-dialog>
     </div>
-</el-dialog>
-</div>
     <!-- 第二部分 -->
     <div class="delite">
       <div class="header">
-      <span>短信类型</span>
-      <el-select v-model="value" placeholder="请选择" >
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
-      <div class="block">
-    <span class="demonstration">发送时间</span>
-    <el-date-picker
-      v-model="value8"
-      type="date"
-      value-format="yyyyMMdd"
-      placeholder="选择日期">
-    </el-date-picker>
-    <el-date-picker
-      v-model="value9"
-      type="date"
-      value-format="yyyyMMdd"
-      placeholder="选择日期">
-    </el-date-picker>
-  </div>
-   <el-button type="primary" style="margin-left:48px" @click="look">查询</el-button>
-    <el-button style="margin-left:30">下载失败日志</el-button>
-</div>
-    <!-- 折线图部分 -->
-    <div class="charts" :style="{width:'1000px',height:'500px'}" ref="charts">
-       <div id="myChart" ref="myChart"></div>
-    </div>
+        <span>短信类型</span>
+        <el-select v-model="value" placeholder="请选择">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+        <div class="block">
+          <span class="demonstration">发送时间</span>
+          <el-date-picker v-model="value8" type="date" value-format="yyyyMMdd" placeholder="选择日期">
+          </el-date-picker>
+          <el-date-picker v-model="value9" type="date" value-format="yyyyMMdd" placeholder="选择日期">
+          </el-date-picker>
+        </div>
+        <el-button type="primary" style="margin-left:48px" @click="look">查询</el-button>
+        <el-button style="margin-left:30">下载失败日志</el-button>
+      </div>
+      <!-- 折线图部分 -->
+      <div class="charts" :style="{width:'1000px',height:'500px'}" ref="charts">
+        <div id="myChart" ref="myChart"></div>
+      </div>
     </div>
     <!-- 第三部分 月账单 -->
     <div class="bills">
       <h2>月账单</h2>
       <div class="line">
-      <div class="block">
-  <span class="demonstration">月账单查询:</span>
-  <el-date-picker
-    v-model="value4"
-    type="month"
-    value-format="yyyy-MM"
-    placeholder="选择月">
-  </el-date-picker>
-  <el-button type="primary" icon="el-icon-search" style="margin-left:-8px" @click="search(1,pageSize, value4)"></el-button>
-  <el-button style="margin-left:30px">下载账单</el-button>
-</div>
-<!-- 表头说明 -->
-<div class="conten">
-当月短信: <span class="red">{{this.totalCount}}</span>条 <span class="dang">当月费用: <i>0.033</i>元/条*<em>{{this.totalCount}}</em>-<i>0.001</i>元/条* <em>23</em>(优惠费用)=<i class="red">{{this.totalPrice}}</i>元</span>
-</div>
-<!-- 表格部分 -->
-<div class="table">
-<el-table
-    :data="tableData"
-    style="width: 100%">
-    <el-table-column style="margin-left:10px"
-      prop="date"
-      label="消费时间" align="center">
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="计费类型" align="center">
-    </el-table-column>
-    <!-- <el-table-column
-      prop="address"
-      label="订单类型" align="center">
-    </el-table-column> -->
-    <el-table-column
-      prop="payNum"
-      label="消费金额" align="center">
-    </el-table-column>
-    <el-table-column
-      prop="tag"
-      label="订单状态" align="center">
-    </el-table-column>
-    <el-table-column
-      prop="totles"
-      label="累计用量(条)" align="center">
-    </el-table-column>
-  </el-table>
-  </div>
-  <div style="text-align:right;padding:20px">
-  <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="currentPage4"
-      :page-sizes="[5, 10, 15, 20]"
-      :page-size="pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
+        <div class="block">
+          <span class="demonstration">月账单查询:</span>
+          <el-date-picker v-model="value4" type="month" value-format="yyyy-MM" placeholder="选择月">
+          </el-date-picker>
+          <el-button type="primary" icon="el-icon-search" style="margin-left:-8px" @click="search(1,pageSize, value4)"></el-button>
+          <el-button style="margin-left:30px">下载账单</el-button>
+        </div>
+        <!-- 表头说明 -->
+        <div class="conten">
+          当月短信:
+          <span class="red">{{this.totalCount}}</span>条
+          <span class="dang">当月费用:
+            <i>{{this.totalFee}}</i>(总费用) -
+            <em>{{this.totalDiscount}}</em>(优惠费用)=
+            <i class="red">{{this.totalPrice}}</i>元</span>
+        </div>
+        <!-- 表格部分 -->
+        <div class="table">
+          <el-table :data="tableData" style="width: 100%">
+            <el-table-column style="margin-left:10px" prop="date" label="消费时间" align="center">
+            </el-table-column>
+            <el-table-column prop="name" label="计费类型" align="center">
+            </el-table-column>
+            <!-- <el-table-column
+                                                              prop="address"
+                                                              label="订单类型" align="center">
+                                                            </el-table-column> -->
+            <el-table-column prop="payNum" label="消费金额" align="center">
+            </el-table-column>
+            <el-table-column prop="tag" label="订单状态" align="center">
+            </el-table-column>
+            <el-table-column prop="totles" label="累计用量(条)" align="center">
+            </el-table-column>
+          </el-table>
+        </div>
+        <div style="text-align:right;padding:20px">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+          </el-pagination>
+        </div>
+      </div>
     </div>
-</div>
-    </div>
-<!-- 余额预警值得弹框 -->
-<div class="warnin">
-<el-dialog title="修改提醒值" :visible.sync="warnin" :modal-append-to-body=false>
-  <el-form :model="form">
-    <el-form-item label="余额提醒值" :label-width="formLabelWidth">
-      <el-input v-model="formName" auto-complete="off"></el-input>
-    </el-form-item>
-    <p style="margin-left:20%">当账户余额低于提醒值时,您会收到提醒短信.</p>
-  </el-form>
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="warnin = false">取 消</el-button>
-    <el-button type="primary" @click="warninSur">确 定</el-button>
-  </div>
-</el-dialog>
+    <!-- 余额预警值得弹框 -->
+    <div class="warnin">
+      <el-dialog title="修改提醒值" :visible.sync="warnin" :modal-append-to-body=false>
+        <el-form :model="form">
+          <el-form-item label="余额提醒值" :label-width="formLabelWidth">
+            <el-input v-model="formName" auto-complete="off"></el-input>
+          </el-form-item>
+          <p style="margin-left:20%">当账户余额低于提醒值时,您会收到提醒短信.</p>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="warnin = false">取 消</el-button>
+          <el-button type="primary" @click="warninSur">确 定</el-button>
+        </div>
+      </el-dialog>
 
-</div>
+    </div>
 
   </div>
 </template>
@@ -217,7 +193,6 @@ export default {
       totalDiscount: '',
       totalFee: '',
       totalPrice: '',
-      totalSaleNum: '',
       currentPage4: 5,
       total: 0,
       totalss: 0,
@@ -241,13 +216,10 @@ export default {
         value: '2',
         label: '验证码'
       }, {
-        value: '3',
-        label: '推广'
-      }, {
         value: '4',
         label: '全部'
       }],
-      value: '',
+      value: '4',
       tableData: [],
       dialogTableVisible: false,
       dialogTable: false,
@@ -259,18 +231,6 @@ export default {
         },
         legend: {
           data: ['发送总数', '成功数量']
-        },
-        toolbox: {
-          show: true,
-          feature: {
-            dataZoom: {
-              yAxisIndex: 'none'
-            },
-            dataView: { readOnly: false },
-            magicType: { type: ['line', 'bar'] },
-            restore: {},
-            saveAsImage: {}
-          }
         },
         xAxis: {
           type: 'category',
@@ -323,6 +283,8 @@ export default {
       this.$message.error('服务器错误！')
     })
     this.listNum()
+    this.value8 = this.formDay(1)
+    this.value9 = this.formDay()
   },
   methods: {
     // 折线图部分
@@ -336,7 +298,8 @@ export default {
       let day = time.substr(6, 2)
       return month + '-' + day
     },
-    // 折线图部分
+    // 折线图部分结束
+    // 短信模板
     demo (pageNo, pageSize) {
       this.dialogTableVisible = true
       this.$ajax.post('/api/homepage/getTemplateList', {
@@ -353,6 +316,7 @@ export default {
             let goods = {
               date: word.code,
               name: word.name,
+              content: word.content,
               address: word.status === 1 ? '通知' : word.status === 2 ? '验证码' : '推广'
             }
             arr.push(goods)
@@ -400,18 +364,19 @@ export default {
     },
     handleSizeChange_1 (val) {
       this.demo(1, val)
+      // this.pageSize = val
     },
     handleCurrentChange_1 (val) {
       this.demo(val, this.pageSize)
     },
     handleSizeChange_2 (val) {
-      this.qian(1, val)
+      this.pageSize = val
     },
     handleCurrentChange_2 (val) {
       this.qian(val, this.pageSize)
     },
     handleSizeChange (val) {
-      this.search(1, val, this.value4)
+      this.pageSize = val
     },
     handleCurrentChange (val) {
       this.search(val, this.pageSize, this.value4)
@@ -429,6 +394,25 @@ export default {
       //   strDate = "0" + strDate;
       // }
       this.value1 = year + seperator1 + month
+      return this.value1
+    },
+    formDay (time) {
+      let date = new Date()
+      if (time) {
+        date = date.getTime() - 24 * 60 * 60 * 1000 * 7
+      }
+      date = new Date(date)
+      let seperator1 = ''
+      let year = date.getFullYear()
+      let month = date.getMonth() + 1
+      let strDate = date.getDate()
+      if (month >= 1 && month <= 9) {
+        month = `0${month}`
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = `0${strDate}`
+      }
+      this.value1 = year + seperator1 + month + strDate
       return this.value1
     },
     // 列表展示
@@ -453,7 +437,7 @@ export default {
             for (let word of res.datas) {
               let goods = {
                 date: word.time,
-                name: word.feetype === '1' ? '充值' : word.feetype === 2 ? '扣费' : '优惠',
+                name: word.feetype === '2' ? '充值' : '扣费',
                 payNum: word.fee,
                 tag: word.status === '1' ? '已结算' : '未结算',
                 totles: word.count
@@ -485,7 +469,6 @@ export default {
           this.totalDiscount = res.totalDiscount
           this.totalFee = res.totalFee
           this.totalPrice = res.totalPrice
-          this.totalSaleNum = res.totalSaleNum
         } else {
           this.$message({
             message: data.data.message,
@@ -560,8 +543,8 @@ export default {
   mounted () {
     this.$ajax.post('/api/homepage/getByTypeTime', {
       userId: JSON.parse(sessionStorage.getItem('user')).userId,
-      startDay: '20170101',
-      endDay: '20171110',
+      startDay: this.formDay(1),
+      endDay: this.formDay(),
       type: 4,
       pageNo: 1,
       pageSize: 10
@@ -682,7 +665,7 @@ export default {
       padding-top 30px
       margin-left 48px
     .line
-      border-top 1px solid gray
+      border-top 1px solid #ccc
       margin 20px
       .block
         margin-top 22px
