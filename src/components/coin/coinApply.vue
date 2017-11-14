@@ -321,7 +321,7 @@ export default {
       console.log(error)
       this.$message.error('服务器错误！')
     })
-    this.listNum()
+    // this.listNum()
     this.value8 = this.formDay(1)
     this.value9 = this.formDay()
     this.value4 = this.getNowFormatDate(2)
@@ -495,13 +495,14 @@ export default {
         }).catch(() => {
           this.$message.error('服务器错误！')
         })
+        this.listNum()
       }
     },
     // 列表的上方数量
     listNum () {
       this.$ajax.post('/api/homepage/getCountMonthByMonth', {
         userId: JSON.parse(sessionStorage.getItem('user')).userId,
-        month: this.getNowFormatDate(2)
+        month: this.value4
       }).then((data) => {
         let res = data.data.data
         if (data.data.code === '200') {
