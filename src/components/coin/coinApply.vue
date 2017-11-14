@@ -61,7 +61,14 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column property="address" label="模板类型"></el-table-column>
+          <el-table-column property="address" label="模板类型">
+             <template slot-scope="scope">
+              <el-tooltip effect="dark" placement="top">
+                <div slot="content">{{ scope.row.content }}</div>
+                <p class="overHidden">{{ scope.row.name }}</p>
+              </el-tooltip>
+            </template>
+          </el-table-column>
         </el-table>
         <div style="text-align:right;padding:20px">
           <el-pagination @size-change="handleSizeChange_1" @current-change="handleCurrentChange_1" :current-page="currentPage4" :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totals">

@@ -11,28 +11,28 @@
       <div class="board">
         <h2>忘记密码</h2>
         <div class="inputCont">
-          <div class="input" :class="{'active':focus}">
+          <div class="input" :class="{'actives':focus}">
             <span class="el-icon-edit"></span>
             <input @input="isCanUse" v-model="phoneNum" type="number" placeholder="输入手机号" @focus="focus=true" @blur="focus=false">
           </div>
           <div class="inputCode">
-            <div class="smInput" >
+            <div class="smInput" :class="{'actives':focusCode}">
               <span class="el-icon-edit-outline"></span>
-              <input type="password" placeholder="输入验证码">
+              <input type="password" placeholder="输入验证码" @focus="focusCode=true" @blur="focusCode=false">
             </div>
             <span class="testButton" v-show="!isCan">
               验证码
             </span>
-            <span class="testButton active" v-show="isCan">
+            <span class="testButton" :class="{'active':isSendMsg}" v-show="isCan">
               <span v-show="show" @click="send">获取验证码</span>
               <span v-show="!show">{{time}} s</span>
             </span>
           </div>
-          <div class="input pCont" :class="{'active':focusWord}">
+          <div class="input pCont" :class="{'actives':focusWord}">
             <span class="el-icon-edit-outline"></span>
             <input type="password" placeholder="输入新密码" v-model="newpass" @focus="focusWord=true" @blur="focusWord=false">
           </div>
-          <div class="input" :class="{'active':focusWords}">
+          <div class="input" :class="{'actives':focusWords}">
             <span class="el-icon-edit-outline"></span>
             <input type="password" placeholder="再次输入密码" v-model="agpass" @focus="focusWords=true" @blur="focusWords=false">
           </div>
@@ -63,18 +63,21 @@ export default {
       focus: false,
       focusCode: false,
       focusWord: false,
-      focusWords: false
+      focusWords: false,
+      isSendMsg: true
     }
   },
   methods: {
     isCanUse () {
       if (/^1[34578]\d{9}$/.test(this.phoneNum)) {
         this.isCan = true
+        this.isSendMsg = true
       } else {
         this.isCan = false
       }
     },
     send () {
+      this.isSendMsg = false
       this.$ajax.post('/api/sms/sendVcode', {
         telephone: this.phoneNum,
         type: 2
@@ -91,6 +94,7 @@ export default {
             if ((me.time--) <= 0) {
               me.time = 60
               me.show = true
+              this.isCan = true
               window.clearInterval(interval)
             }
           }, 1000)
@@ -228,6 +232,8 @@ export default {
             font-size 16px
           .active
             background #40b6ff
+          .actives
+            border 1px solid #40b6f2
         .input
           width 310px
           height 16px
@@ -275,8 +281,6 @@ export default {
           margin-bottom 16px
           &:hover
             background #40b6f2
-          &:active
-            color lightgreen
         h3
           overflow hidden
           span
@@ -284,8 +288,8 @@ export default {
             float right
             line-height 38px
             cursor pointer
-            &:hover
-              color red
-        .active
+            :hover
+              color #40b6ff
+        .actives
           border 1px solid #40b6f2
 </style>

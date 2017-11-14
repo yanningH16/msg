@@ -105,7 +105,15 @@ export default {
         })
         return false
       }
-      if (this.newpass === '' || this.agpass === '' || this.name === '') {
+
+      if (!(/((?=.*\d)(?=.*\D)|(?=.*[a-zA-Z])(?=.*[^a-zA-Z]))^.{6,16}$/.test(this.newpass)) || !(/((?=.*\d)(?=.*\D)|(?=.*[a-zA-Z])(?=.*[^a-zA-Z]))^.{6,16}$/.test(this.agpass))) {
+        this.$message({
+          message: '密码长度为6到16位数字或字母',
+          type: 'warning'
+        })
+        return false
+      }
+      if (this.newpass === '' || this.agpass === '') {
         this.$message({
           message: '密码不能为空',
           type: 'warning'
@@ -147,6 +155,7 @@ export default {
   text-align right
   font-size 0
   border-bottom 1px solid #dedede
+  height 50px
   .reportButton, .nav
     display inline-block
   .info
@@ -177,6 +186,9 @@ export default {
 <style>
 .el-dialog__title {
   float: left;
+}
+.el-popper[x-placement^=bottom]{
+  margin-top: -5px
 }
 </style>
 

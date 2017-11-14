@@ -170,8 +170,6 @@ export default {
           margin-bottom 16px
           &:hover
             background #40b6f2
-          &:active
-            color lightgreen
         h3
           overflow hidden
           span
