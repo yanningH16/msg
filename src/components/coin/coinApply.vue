@@ -501,7 +501,7 @@ export default {
     listNum () {
       this.$ajax.post('/api/homepage/getCountMonthByMonth', {
         userId: JSON.parse(sessionStorage.getItem('user')).userId,
-        month: this.getNowFormatDate()
+        month: this.getNowFormatDate(2)
       }).then((data) => {
         let res = data.data.data
         if (data.data.code === '200') {
