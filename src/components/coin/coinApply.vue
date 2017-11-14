@@ -102,7 +102,7 @@
         <el-button style="margin-left:30">下载失败日志</el-button>
       </div>
       <!-- 折线图部分 -->
-      <div class="charts" :style="{width:'1000px',height:'500px'}" ref="charts">
+      <div class="charts" :style="{width:'1500px',height:'500px'}" ref="charts">
         <div id="myChart" ref="myChart"></div>
       </div>
     </div>
@@ -134,9 +134,9 @@
             <el-table-column prop="name" label="计费类型" align="center">
             </el-table-column>
             <!-- <el-table-column
-                                                              prop="address"
-                                                              label="订单类型" align="center">
-                                                            </el-table-column> -->
+                                                                            prop="address"
+                                                                            label="订单类型" align="center">
+                                                                          </el-table-column> -->
             <el-table-column prop="payNum" label="消费金额" align="center">
             </el-table-column>
             <el-table-column prop="tag" label="订单状态" align="center">
@@ -210,14 +210,14 @@ export default {
       value9: '',
       value4: '',
       options: [{
+        value: '4',
+        label: '全部'
+      }, {
         value: '1',
         label: '通知'
       }, {
         value: '2',
         label: '验证码'
-      }, {
-        value: '4',
-        label: '全部'
       }],
       value: '4',
       tableData: [],
@@ -247,12 +247,22 @@ export default {
           {
             name: '发送总数',
             type: 'line',
-            data: [11, 11, 15, 13, 12, 13, 10]
+            data: [11, 11, 15, 13, 12, 13, 10],
+            itemStyle: {
+              normal: {
+                color: '#40b6ff'
+              }
+            }
           },
           {
             name: '成功数量',
             type: 'line',
-            data: [1, 4, 2, 5, 3, 2, 9]
+            data: [1, 4, 2, 5, 3, 2, 9],
+            itemStyle: {
+              normal: {
+                color: '#ff3341'
+              }
+            }
           }
         ]
       }
@@ -285,6 +295,8 @@ export default {
     this.listNum()
     this.value8 = this.formDay(1)
     this.value9 = this.formDay()
+    this.value4 = this.getNowFormatDate(2)
+    this.search(1, this.pageSize)
   },
   methods: {
     // 折线图部分
@@ -381,9 +393,12 @@ export default {
     handleCurrentChange (val) {
       this.search(val, this.pageSize, this.value4)
     },
-    getNowFormatDate () {
+    getNowFormatDate (valTime) {
       let date = new Date()
       let seperator1 = ''
+      if (valTime) {
+        seperator1 = '-'
+      }
       let year = date.getFullYear()
       let month = date.getMonth() + 1
       // let strDate = date.getDate();

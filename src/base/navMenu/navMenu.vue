@@ -108,7 +108,7 @@ export default {
             content ''
             height 100%
             width 5px
-            background $bg-red
+            background #40b6ff
             position absolute
             transition all 0.3s
         &.router-link-active
@@ -117,7 +117,7 @@ export default {
             content ''
             height 100%
             width 5px
-            background $bg-red
+            background #40b6ff
             position absolute
         .text
           margin-left 48px
@@ -127,7 +127,7 @@ export default {
           line-height 12px
           margin 12px 0
           right 15px
-          background $bg-red
+          background #40b6ff
           border-radius 10px
           padding 2px 4px
           text-align center

@@ -11,17 +11,17 @@
       <div class="board">
         <h2>登&nbsp;录</h2>
         <div class="inputCont">
-          <div class="input">
+          <div class="input" :class="{ 'active': focus }">
             <span class="el-icon-edit"></span>
-            <input type="number" placeholder="输入手机号" v-model="username">
+            <input type="number" placeholder="输入手机号" v-model="username" @focus="focus=true" @blur="focus=false">
           </div>
-          <div class="input">
+          <div class="input" :class="{ 'active': focusPass }">
             <span class="el-icon-edit-outline"></span>
-            <input type="password" placeholder="输入登录密码" v-model="password">
+            <input type="password" placeholder="输入登录密码" v-model="password" @focus="focusPass=true" @blur="focusPass=false">
           </div>
           <button @click="LogoIn">登&nbsp;录</button>
           <h3>
-            <span>
+            <span class="hover">
               <router-link :to="{ name: 'reg', params: { userId: 123 }}">忘记密码</router-link>
             </span>
           </h3>
@@ -37,7 +37,9 @@ export default {
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      focus: false,
+      focusPass: false
     }
   },
   methods: {
@@ -147,6 +149,14 @@ export default {
             border none
             font-size 16px
             line-height 22px
+          :-moz-placeholder /* Mozilla Firefox 4 to 18 */
+            color lightgray
+          ::-moz-placeholder /* Mozilla Firefox 19+ */
+            color lightgray
+          input:-ms-input-placeholder
+            color lightgray
+          input::-webkit-input-placeholder
+            color lightgray
         button
           width 100%
           border none
@@ -168,7 +178,9 @@ export default {
             font-size 12px
             float right
             line-height 38px
-            cursor pointer
-            &:hover
-              color red
+            cursor pointer  
+            :hover
+              color #40b6ff
+        .active
+          border 1px solid #40b6f2
 </style>

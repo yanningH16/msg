@@ -113,7 +113,7 @@ export default {
         return false
       }
       this.$ajax.post('/api/user/changePwd', {
-        telephone: this.$route.query.phone,
+        telephone: JSON.parse(sessionStorage.getItem('user')).telephone,
         oldPwd: md5(this.name),
         newPwd: md5(this.newpass),
         repeatPwd: md5(this.agpass)

@@ -11,34 +11,36 @@
       <div class="board">
         <h2>忘记密码</h2>
         <div class="inputCont">
-          <div class="input">
+          <div class="input" :class="{'active':focus}">
             <span class="el-icon-edit"></span>
-            <input @input="isCanUse" v-model="phoneNum" type="number" placeholder="输入手机号">
+            <input @input="isCanUse" v-model="phoneNum" type="number" placeholder="输入手机号" @focus="focus=true" @blur="focus=false">
           </div>
           <div class="inputCode">
-            <div class="smInput">
+            <div class="smInput" >
               <span class="el-icon-edit-outline"></span>
-              <input type="password" placeholder="输入验证码" v-model="code">
+              <input type="password" placeholder="输入验证码">
             </div>
             <span class="testButton" v-show="!isCan">
               验证码
             </span>
             <span class="testButton active" v-show="isCan">
-             <span v-show="show" @click="send">获取验证码</span>
+              <span v-show="show" @click="send">获取验证码</span>
               <span v-show="!show">{{time}} s</span>
             </span>
           </div>
-          <div class="input pCont">
+          <div class="input pCont" :class="{'active':focusWord}">
             <span class="el-icon-edit-outline"></span>
-            <input type="password" placeholder="输入新密码" v-model="newpass">
+            <input type="password" placeholder="输入新密码" v-model="newpass" @focus="focusWord=true" @blur="focusWord=false">
           </div>
-          <div class="input">
+          <div class="input" :class="{'active':focusWords}">
             <span class="el-icon-edit-outline"></span>
-            <input type="password" placeholder="再次输入密码" v-model="agpass">
+            <input type="password" placeholder="再次输入密码" v-model="agpass" @focus="focusWords=true" @blur="focusWords=false">
           </div>
           <button @click="submit">提&nbsp;交</button>
           <h3>
-            <span> <router-link :to="{ name: 'login', params: { userId: 123 }}">去登录</router-link></span>
+            <span>
+              <router-link :to="{ name: 'login', params: { userId: 123 }}">去登录</router-link>
+            </span>
           </h3>
         </div>
       </div>
@@ -57,7 +59,11 @@ export default {
       agpass: '',
       code: '',
       show: true,
-      time: 60
+      time: 60,
+      focus: false,
+      focusCode: false,
+      focusWord: false,
+      focusWords: false
     }
   },
   methods: {
@@ -200,6 +206,14 @@ export default {
               border none
               font-size 16px
               line-height 16px
+            :-moz-placeholder /* Mozilla Firefox 4 to 18 */
+              color lightgray
+            ::-moz-placeholder /* Mozilla Firefox 19+ */
+              color lightgray
+            input:-ms-input-placeholder
+              color lightgray
+            input::-webkit-input-placeholder
+              color lightgray
           .testButton
             display inline-block
             border-radius 2px
@@ -232,6 +246,14 @@ export default {
             border none
             font-size 16px
             line-height 22px
+          :-moz-placeholder /* Mozilla Firefox 4 to 18 */
+            color lightgray
+          ::-moz-placeholder /* Mozilla Firefox 19+ */
+            color lightgray
+          input:-ms-input-placeholder
+            color lightgray
+          input::-webkit-input-placeholder
+            color lightgray
         .pCont
           margin-bottom 42px
           &:after
@@ -264,4 +286,6 @@ export default {
             cursor pointer
             &:hover
               color red
+        .active
+          border 1px solid #40b6f2
 </style>

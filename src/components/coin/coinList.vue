@@ -52,14 +52,14 @@ export default {
       time: '',
       total: 0,
       options: [{
+        value: '3',
+        label: '全部'
+      }, {
         value: '1',
         label: '通知'
       }, {
         value: '2',
         label: '验证码'
-      }, {
-        value: '3',
-        label: '全部'
       }],
       tableData: []
     }
