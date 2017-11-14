@@ -257,7 +257,7 @@ export default {
             data: [11, 11, 15, 13, 12, 13, 10],
             itemStyle: {
               normal: {
-                color: '#40b6ff'
+                color: '#ff3341'
               }
             }
           },
@@ -267,7 +267,7 @@ export default {
             data: [1, 4, 2, 5, 3, 2, 9],
             itemStyle: {
               normal: {
-                color: '#ff3341'
+                color: '#40b6ff'
               }
             }
           }
