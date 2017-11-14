@@ -62,7 +62,7 @@
             </template>
           </el-table-column>
           <el-table-column property="address" label="模板类型">
-             <template slot-scope="scope">
+            <template slot-scope="scope">
               <el-tooltip effect="dark" placement="top">
                 <div slot="content">{{ scope.row.content }}</div>
                 <p class="overHidden">{{ scope.row.name }}</p>
@@ -109,7 +109,7 @@
         <el-button style="margin-left:30">下载失败日志</el-button>
       </div>
       <!-- 折线图部分 -->
-      <div class="charts" :style="{width:'1500px',height:'500px'}" ref="charts">
+      <div class="charts" :style="{height:'500px'}" ref="charts">
         <div id="myChart" ref="myChart"></div>
       </div>
     </div>
@@ -141,9 +141,9 @@
             <el-table-column prop="name" label="计费类型" align="center">
             </el-table-column>
             <!-- <el-table-column
-                                                                            prop="address"
-                                                                            label="订单类型" align="center">
-                                                                          </el-table-column> -->
+              prop="address"
+              label="订单类型" align="center">
+            </el-table-column> -->
             <el-table-column prop="payNum" label="消费金额" align="center">
             </el-table-column>
             <el-table-column prop="tag" label="订单状态" align="center">
@@ -275,12 +275,34 @@ export default {
       }
     }
   },
+  computed: {
+    defaultDays: {
+      set (val) {
+        return val
+      },
+      get () {
+        let minTime = parseInt(this.value8)
+        let maxTime = parseInt(this.value9)
+        let daysLength = maxTime - minTime
+        let objDays = []
+        for (let i = 0; i <= daysLength; i++) {
+          objDays.push({
+            day: minTime + i,
+            failNum: 0,
+            hour: 0,
+            quireNum: 0,
+            successNum: 0
+          })
+        }
+        return objDays
+      }
+    }
+  },
   created () {
     this.$ajax.post('/api/homepage/getAccountCurrentInfo', {
       userId: JSON.parse(sessionStorage.getItem('user')).userId,
       month: this.getNowFormatDate()
     }).then((data) => {
-      console.log(data)
       let res = data.data.data
       if (data.data.code === '200') {
         this.balance = res.balance
@@ -326,7 +348,6 @@ export default {
         pageSize: pageSize,
         userId: JSON.parse(sessionStorage.getItem('user')).userId
       }).then((data) => {
-        console.log(data)
         let res = data.data.data
         if (data.data.code === '200') {
           this.totals = res.total
@@ -358,7 +379,6 @@ export default {
         pageSize: pageSize,
         userId: JSON.parse(sessionStorage.getItem('user')).userId
       }).then((data) => {
-        console.log(data)
         let res = data.data.data
         if (data.data.code === '200') {
           this.totalss = res.total
@@ -451,7 +471,6 @@ export default {
           userId: JSON.parse(sessionStorage.getItem('user')).userId,
           month: this.value4
         }).then((data) => {
-          console.log(data)
           let res = data.data.data
           if (data.data.code === '200') {
             this.total = res.totalCount
@@ -484,7 +503,6 @@ export default {
         userId: JSON.parse(sessionStorage.getItem('user')).userId,
         month: this.getNowFormatDate()
       }).then((data) => {
-        console.log(data)
         let res = data.data.data
         if (data.data.code === '200') {
           this.totalCount = res.totalCount
@@ -507,7 +525,6 @@ export default {
         userId: JSON.parse(sessionStorage.getItem('user')).userId,
         amount: this.formName
       }).then(data => {
-        console.log(data)
         if (data.data.code === '200') {
           this.$message({
             message: '修改成功',
@@ -544,7 +561,7 @@ export default {
             let timeArr = []
             let sendAll = []
             let sendSuccess = []
-            for (let i of data.data.data) {
+            for (let i of this.getDateArr(data.data.data)) {
               timeArr.push(this.timeFilter(i.day))
               sendAll.push(i.quireNum)
               sendSuccess.push(i.successNum)
@@ -560,6 +577,16 @@ export default {
           console.log(error)
         })
       }
+    },
+    getDateArr (data) {
+      for (let item of this.defaultDays) {
+        for (let itemNew of data) {
+          if (item.day === itemNew.day) {
+            Object.assign(item, itemNew)
+          }
+        }
+      }
+      return this.defaultDays
     }
   },
   mounted () {
@@ -575,7 +602,7 @@ export default {
         let timeArr = []
         let sendAll = []
         let sendSuccess = []
-        for (let i of data.data.data) {
+        for (let i of this.getDateArr(data.data.data)) {
           timeArr.push(this.timeFilter(i.day))
           sendAll.push(i.quireNum)
           sendSuccess.push(i.successNum)

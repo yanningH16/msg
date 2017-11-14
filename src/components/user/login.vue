@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" @keyup.13="LogoIn">
     <div class="logo">
       <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510149804507&di=38dc2b1b6be35acb5c774289b83f10fd&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0124f358cec437a801219c77cd9b01.jpg%40900w_1l_2o_100sh.jpg" alt="logo">
       <span>抱 一 通 信</span>
