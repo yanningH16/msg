@@ -10,7 +10,8 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    // app: './src/main.js'
+    app: ['babel-polyfill', './src/main.js']
   },
   output: {
     path: config.build.assetsRoot,
@@ -72,5 +73,12 @@ module.exports = {
         }
       }
     ]
+  },
+  externals: {
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'axios': 'axios',
+    'element-ui': 'ELEMENT',
+    "echarts": "echarts"
   }
 }

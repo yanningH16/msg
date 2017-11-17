@@ -2,7 +2,9 @@ var express = require('express')
 var proxy = require('http-proxy-middleware')
 var history = require('connect-history-api-fallback')
 // var config = require('./config/index')
+var compression = require('compression')
 var app = express()
+app.use(compression())
 app.use('/api', proxy({
   target: 'http://116.62.136.130:8093',
   changeOrigin: true,
@@ -10,20 +12,6 @@ app.use('/api', proxy({
     '^/api': ''
   }
 }))
-// app.use('/upload', proxy({
-//   target: 'http://118.31.72.73:8086',
-//   changeOrigin: true,
-//   pathRewrite: {
-//     '^/upload': ''
-//   }
-// }))
-// app.use('/other', proxy({
-//   target: 'http://118.31.72.73:8091',
-//   changeOrigin: true,
-//   pathRewrite: {
-//     '^/other': ''
-//   }
-// }))
 app.use(history({
   index: './index.html'
 }))

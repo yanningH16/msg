@@ -178,7 +178,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-let echarts = require('echarts')
+import echarts from 'echarts'
 export default {
   name: 'coinApply',
   data () {
