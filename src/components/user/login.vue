@@ -1,7 +1,7 @@
 <template>
   <div class="login" @keyup.13="LogoIn">
     <div class="logo">
-      <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510149804507&di=38dc2b1b6be35acb5c774289b83f10fd&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0124f358cec437a801219c77cd9b01.jpg%40900w_1l_2o_100sh.jpg" alt="logo">
+      <img src="../../assets/images/logo.png" alt="logo">
       <span>抱 一 通 信</span>
     </div>
     <div class="cont">
@@ -98,16 +98,18 @@ export default {
     padding 26px 45px
     overflow hidden
     img
-      width 108px
-      height 33px
-      line-height 33px
+      width 47.5px
+      height 36.5px
+      line-height 36.5px
       opacity 37.53
       float left
       vertical-align middle
     span
       font-size 18px
-      line-height 33px
+      line-height 30px
       margin-left 12px
+      float left 
+      margin-top 5px
   .cont
     display flex
     justify-content space-around

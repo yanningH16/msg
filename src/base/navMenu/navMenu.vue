@@ -2,7 +2,9 @@
   <div class="menu">
     <div class="logo">
       <!-- <img src="logo" alt="Logo" class="img"> -->
-      <span style="color:#fff;line-height:60px">LOGO</span>
+      <span style="color:#fff;line-height:60px">
+        <img src="../../assets/images/logo.png" alt="" width="47" height="36" style="margin-top:12px">
+      </span>
     </div>
     <div class="router">
       <div class="routerBox" v-for="(item,index) in menus" :key="index" ref="routerBox" @click="setRouterActive">  
