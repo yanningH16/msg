@@ -6,7 +6,7 @@ var compression = require('compression')
 var app = express()
 app.use(compression())
 app.use('/api', proxy({
-  target: 'http://116.62.136.130:8093',
+  target: 'http://116.62.166.95:8093',
   changeOrigin: true,
   pathRewrite: {
     '^/api': ''
