@@ -44,7 +44,7 @@ export default {
   // mixins: [pageCommon],
   data () {
     return {
-      currentPage4: 5,
+      currentPage4: 1,
       pageSize: 5,
       type: '3',
       phone: '',

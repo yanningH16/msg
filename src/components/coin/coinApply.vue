@@ -179,6 +179,7 @@
 </template>
 <script type="text/ecmascript-6">
 import echarts from 'echarts'
+import { dateRange } from '../../assets/js/utils'
 export default {
   name: 'coinApply',
   data () {
@@ -200,7 +201,7 @@ export default {
       totalDiscount: '',
       totalFee: '',
       totalPrice: '',
-      currentPage4: 5,
+      currentPage4: 1,
       total: 0,
       totalss: 0,
       totals: 0,
@@ -281,13 +282,14 @@ export default {
         return val
       },
       get () {
-        let minTime = parseInt(this.value8)
-        let maxTime = parseInt(this.value9)
-        let daysLength = maxTime - minTime
+        let minTime = this.value8
+        let maxTime = this.value9
+        let days = dateRange(this.resetTime(minTime), this.resetTime(maxTime))
         let objDays = []
-        for (let i = 0; i <= daysLength; i++) {
+        // console.log(days)
+        for (let i = 0; i < days.length; i++) {
           objDays.push({
-            day: minTime + i,
+            day: this.getTime(days[i]),
             failNum: 0,
             hour: 0,
             quireNum: 0,
@@ -328,6 +330,17 @@ export default {
     this.search(1, this.pageSize)
   },
   methods: {
+    // 转化时间
+    resetTime (time) {
+      if (!time) {
+        return false
+      }
+      return `${time.slice(0, 4)}-${time.slice(4, 6)}-${time.slice(6, 8)}`
+    },
+    getTime (time) {
+      let reg = new RegExp('-', 'g')
+      return time.replace(reg, '')
+    },
     // 折线图部分
     resizeCharts () {
       this.$refs.myChart.style.height = this.$refs.charts.style.height
@@ -562,6 +575,7 @@ export default {
             let timeArr = []
             let sendAll = []
             let sendSuccess = []
+            console.log(data.data.data)
             for (let i of this.getDateArr(data.data.data)) {
               timeArr.push(this.timeFilter(i.day))
               sendAll.push(i.quireNum)
@@ -582,7 +596,8 @@ export default {
     getDateArr (data) {
       for (let item of this.defaultDays) {
         for (let itemNew of data) {
-          if (item.day === itemNew.day) {
+          console.log(typeof (item.day), typeof (itemNew.day))
+          if (parseInt(item.day) === itemNew.day) {
             Object.assign(item, itemNew)
           }
         }
@@ -599,6 +614,7 @@ export default {
       pageNo: 1,
       pageSize: 10
     }).then((data) => {
+      console.log(data)
       if (data.data.code === '200') {
         let timeArr = []
         let sendAll = []
